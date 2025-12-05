@@ -1,0 +1,11 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/POC-PHQ9-BE/.vs
+/POC-PHQ9-BE.zip
+/POC-PHQ9-UI.zip
+/POC-PHQ9-UI/.vs
+/backend/.vs
+/frontend/.vs

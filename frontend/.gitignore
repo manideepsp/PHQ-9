@@ -1,0 +1,42 @@
+# dependencies
+node_modules/
+*.log
+npm-debug.log*
+yarn-error.log
+pnpm-debug.log
+
+# production
+dist/
+build/
+
+# misc
+.DS_Store
+.env
+.env.*
+.vscode/
+.idea/
+*.local
+
+# local dev server
+*.cache
+
+# OS
+Thumbs.db
+
+# output
+*.out
+
+# coverage
+coverage/
+
+# editor
+*.swp
+
+# static analysis artifacts
+.eslintcache
+
+# macOS
+__MACOSX/
+
+# vite
+.vite/

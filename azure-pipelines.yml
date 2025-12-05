@@ -1,0 +1,64 @@
+trigger:
+  branches:
+    include:
+      - master
+
+pool:
+  name: LocalPool
+
+steps:
+  - checkout: self
+
+  # ------------ Build Images via Docker Compose ------------
+  - script: |
+      echo Building images using docker-compose...
+      docker compose -f docker-compose.yml build
+    displayName: "Docker Compose Build"
+
+  # ------------ Stop & Remove Old Containers Safely ------------
+  - task: PowerShell@2
+    displayName: "Docker Compose Down (Cleanup)"
+    inputs:
+      targetType: 'inline'
+      script: |
+        Write-Host "Stopping and removing containers created by Compose..."
+        if (Test-Path "docker-compose.yml") {
+          docker compose down --volumes --remove-orphans
+        }
+
+        Write-Host "Force removing any manually created conflicting containers..."
+        $containers = "phq9_backend","phq9_frontend"
+        foreach ($name in $containers) {
+          $exists = docker ps -a --format "{{.Names}}" | Where-Object { $_ -eq $name }
+          if ($exists) {
+            Write-Host "Removing container: $name"
+            docker stop $name 2>$null
+            docker rm -f $name 2>$null
+          }
+        }
+
+        Write-Host "Cleanup Completed!"
+
+  # ------------ Start Services via Docker Compose ------------
+  - script: |
+      echo Starting services using docker-compose...
+      docker compose -f docker-compose.yml up -d
+    displayName: "Docker Compose Up (Run Containers)"
+
+  # ------------ Verify Running Containers ------------
+  - script: |
+      echo Checking running containers...
+      docker ps -a
+    displayName: "Verify Running Containers"
+
+  # ------------ Show verbose logs on failure ------------
+  - script: |
+      echo "ERROR: A previous step failed — printing verbose Docker/Compose logs to aid debugging"
+      echo "--- docker ps -a ---"
+      docker ps -a || true
+      echo "--- docker compose ps (compose file) ---"
+      docker compose -f docker-compose.yml ps --all || true
+      echo "--- docker compose logs (tail 500) ---"
+      docker compose -f docker-compose.yml logs --tail 500 --no-color || true
+    displayName: "Show verbose logs on failure"
+    condition: failed()

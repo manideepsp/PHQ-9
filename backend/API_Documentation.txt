@@ -1,0 +1,212 @@
+# PHQ-9 Mental Health Assessment API Documentation
+
+## Base URL
+`http://localhost:5000/api`
+
+## Authentication Endpoints
+
+### 1. Register User
+**Endpoint**: `POST /register`
+**Description**: Register a new user in the system
+**Request Body**:
+```json
+{
+    "username": "string",
+    "password": "string",
+    "age": "integer",
+    "gender": "string",
+    "industry": "string",
+    "profession": "string"
+}
+```
+**Success Response** (200):
+```json
+{
+    "status": "success",
+    "message": "User registered successfully",
+    "data": {
+        "user_id": "integer"
+    }
+}
+```
+**Error Response** (400):
+```json
+{
+    "status": "error",
+    "message": "Username already exists",
+    "error": "Detailed error message"
+}
+```
+
+### 2. Login
+**Endpoint**: `POST /login`
+**Description**: Authenticate user and get access token
+**Request Body**:
+```json
+{
+    "username": "string",
+    "password": "string"
+}
+```
+**Success Response** (200):
+```json
+{
+    "status": "success",
+    "message": "Login successful",
+    "data": {
+        "user_id": "integer",
+        "token": "string"
+    }
+}
+```
+**Error Response** (401):
+```json
+{
+    "status": "error",
+    "message": "Invalid credentials",
+    "error": "Detailed error message"
+}
+```
+
+## PHQ-9 Assessment Endpoints
+
+### 1. Submit PHQ-9 Assessment
+**Endpoint**: `POST /phq9/submit`
+**Description**: Submit a new PHQ-9 assessment
+**Authentication**: Required
+**Request Body**:
+```json
+{
+    "user_id": "integer",
+    "responses": {
+        "1": "integer (0-3)",
+        "2": "integer (0-3)",
+        "3": "integer (0-3)",
+        "4": "integer (0-3)",
+        "5": "integer (0-3)",
+        "6": "integer (0-3)",
+        "7": "integer (0-3)",
+        "8": "integer (0-3)",
+        "9": "integer (0-3)"
+    },
+    "patients_notes": "string (optional)",
+    "doctors_notes": "string (optional)"
+}
+```
+**Success Response** (200):
+```json
+{
+    "status": "success",
+    "message": "PHQ-9 assessment submitted successfully",
+    "data": {
+        "assessment_id": "integer",
+        "total_score": "integer",
+        "severity": "string",
+        "mdd_assessment": "boolean"
+    }
+}
+```
+
+### 2. Get User Assessment History
+**Endpoint**: `GET /phq9/history/<user_id>`
+**Description**: Retrieve all PHQ-9 assessments for a user
+**Authentication**: Required
+**Success Response** (200):
+```json
+{
+    "status": "success",
+    "data": [
+        {
+            "assessment_id": "integer",
+            "submitted_at": "datetime",
+            "total_score": "integer",
+            "responses": {
+                "1": "integer",
+                "2": "integer",
+                "3": "integer",
+                "4": "integer",
+                "5": "integer",
+                "6": "integer",
+                "7": "integer",
+                "8": "integer",
+                "9": "integer"
+            },
+            "severity": "string",
+            "mdd_assessment": "boolean",
+            "patients_notes": "string",
+            "doctors_notes": "string"
+        }
+    ]
+}
+```
+
+### 3. Get Timeline Prediction
+**Endpoint**: `GET /phq9/predict/<user_id>`
+**Description**: Get predicted PHQ-9 scores and relapse risk
+**Authentication**: Required
+**Success Response** (200):
+```json
+{
+    "status": "success",
+    "data": {
+        "timeline": [
+            {
+                "consultation_seq": "integer",
+                "phq9_total_score": "float",
+                "relapse": "boolean",
+                "is_predicted": "boolean"
+            }
+        ]
+    }
+}
+```
+
+### 4. Generate Intervention
+**Endpoint**: `POST /phq9/intervention`
+**Description**: Generate AI-driven intervention based on assessment
+**Authentication**: Required
+**Request Body**:
+```json
+{
+    "user_id": "integer",
+    "phq9_assessment_id": "integer"
+}
+```
+**Success Response** (200):
+```json
+{
+    "status": "success",
+    "data": {
+        "intervention": "string",
+        "created_at": "datetime"
+    }
+}
+```
+
+## Error Responses
+
+All endpoints follow a consistent error response format:
+```json
+{
+    "status": "error",
+    "message": "Human-readable error message",
+    "error": "Detailed error information (in development mode)"
+}
+```
+
+Common HTTP Status Codes:
+- 200: Success
+- 400: Bad Request (invalid input)
+- 401: Unauthorized (missing or invalid token)
+- 403: Forbidden (insufficient permissions)
+- 404: Not Found
+- 500: Internal Server Error
+
+## Notes
+
+1. All date/time values are in ISO 8601 format (UTC)
+2. Authentication uses JWT tokens
+3. PHQ-9 scores range from 0-27
+4. Severity levels: "minimal", "mild", "moderate", "moderately severe", "severe"
+5. Rate limiting may be applied to API endpoints
+6. All endpoints require proper error handling

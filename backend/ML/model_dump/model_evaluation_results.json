@@ -1,0 +1,17 @@
+{
+    "model_name": "patient_lstm",
+    "metrics": {
+        "mse": 0.007947628386318684,
+        "rmse": 0.08914947215950683,
+        "mae": 0.038485754281282425,
+        "mape": 115926695411712.0,
+        "r2": 0.9370090365409851,
+        "explained_variance": 0.9386720657348633
+    },
+    "feature_importance": [],
+    "plots": [
+        "C:\\Users\\Manideep S\\Downloads\\Repo\\Mental-Health-Predictor\\POC-PHQ9-BE\\backend\\ML\\model_dump\\plots\\dsm5_q9_flag_enc_pred_vs_actual.png",
+        "C:\\Users\\Manideep S\\Downloads\\Repo\\Mental-Health-Predictor\\POC-PHQ9-BE\\backend\\ML\\model_dump\\plots\\relapse_pred_vs_actual.png",
+        "C:\\Users\\Manideep S\\Downloads\\Repo\\Mental-Health-Predictor\\POC-PHQ9-BE\\backend\\ML\\model_dump\\plots\\phq9_total_score_pred_vs_actual.png"
+    ]
+}

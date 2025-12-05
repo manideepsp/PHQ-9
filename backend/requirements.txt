@@ -1,0 +1,50 @@
+# 🔒 Critical pinned versions to avoid build failures
+typing-extensions>=4.14.1,<5.0.0  # updated to satisfy pydantic >=2.7.4
+packaging==21.3
+setuptools==68.2.2
+# pip==24.0
+pytest==7.4.2
+
+# Core backend
+Flask==3.0.2
+flask-cors==4.0.1
+Flask-SQLAlchemy==3.1.1
+Werkzeug==3.0.3
+SQLAlchemy==2.0.21
+psycopg2-binary==2.9.9
+bcrypt==4.1.2
+python-dotenv==1.0.1
+requests==2.31.0
+pydantic>=2.7.4,<3.0.0  # relax to match langchain's minimum requirement
+
+# Data Science
+numpy>=1.22.4,<1.24  # pinned to be compatible with tensorflow-cpu
+pandas==2.1.4
+scikit-learn==1.3.2
+joblib==1.3.2
+scipy==1.11.4
+xgboost==1.6.2
+
+# ML + NLP (CPU Friendly)
+sentence-transformers==2.5.1
+transformers==4.37.2
+nltk==3.8.1
+textblob==0.17.1
+tensorflow-cpu==2.12.0
+seaborn==0.12.2
+matplotlib==3.8.0
+shap==0.41.0
+
+# LangChain & RAG
+## Removed langchain packages to simplify dependency resolution (not imported in codebase)
+# langchain==0.3.7
+# langchain-community==0.3.7
+# langchain-groq==0.3.7
+# langchain-ollama removed (conflicts with newer langchain-core used by other langchain packages)
+qdrant-client==1.8.1
+ollama==0.1.9
+
+# Utils
+tqdm==4.66.4
+protobuf==4.25.3
+orjson==3.10.7
