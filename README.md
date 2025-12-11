@@ -28,7 +28,7 @@ v
 [ PostgreSQL + Local Models + Embeddings ]
 
 ````
-
+![Architecture diagram](PHQ-9-Predictor-Architecture-Diagram.svg)
 ---
 
 ## 🚀 Key Features
